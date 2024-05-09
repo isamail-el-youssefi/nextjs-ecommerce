@@ -19,7 +19,7 @@ export default function ProductForm() {
       <div className="space-y-2">
         <Label htmlFor="name">Name</Label>
         <Input type="text" id="name" name="name" required />
-        {error?.name && <div className="text-danger">{error.name}</div>}
+        {error?.name && <div className="text-destructive">{error.name}</div>}
       </div>
       <div className="space-y-2">
         <Label htmlFor="priceincents">Price</Label>
@@ -32,7 +32,7 @@ export default function ProductForm() {
           onChange={(e) => setPriceInCents(Number(e.target.value))}
         />
         {error?.priceincents && (
-          <div className="text-danger">{error.priceincents}</div>
+          <div className="text-destructive">{error.priceincents}</div>
         )}
       </div>
       <div className="text-muted-foreground">
@@ -42,18 +42,18 @@ export default function ProductForm() {
         <Label htmlFor="description">Description</Label>
         <Textarea id="description" name="description" required />
         {error?.description && (
-          <div className="text-danger">{error.description}</div>
+          <div className="text-destructive">{error.description}</div>
         )}
       </div>
       <div className="space-y-2">
         <Label htmlFor="file">File</Label>
         <Input type="file" id="file" name="file" required />
-        {error?.file && <div className="text-danger">{error.file}</div>}
+        {error?.file && <div className="text-destructive">{error.file}</div>}
       </div>
       <div className="space-y-2">
         <Label htmlFor="image">Image</Label>
         <Input type="file" id="image" name="image" required />
-        {error?.image && <div className="text-danger">{error.image}</div>}
+        {error?.image && <div className="text-destructive">{error.image}</div>}
       </div>
       <SubmitButton />
     </form>
