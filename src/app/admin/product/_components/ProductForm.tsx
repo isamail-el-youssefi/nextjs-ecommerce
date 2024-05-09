@@ -18,11 +18,11 @@ export default function ProductForm() {
         <Input type="text" id="name" name="name" required />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="price">Price</Label>
+        <Label htmlFor="priceincents">Price</Label>
         <Input
           type="number"
-          id="price"
-          name="price"
+          id="priceincents"
+          name="priceincents"
           required
           value={priceInCents}
           onChange={(e) => setPriceInCents(Number(e.target.value))}

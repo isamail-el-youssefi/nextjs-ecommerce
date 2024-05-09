@@ -15,7 +15,6 @@ model Product {
   id                     String @id @default(uuid())
   name                   String
   priceInCents           Int      //in cents bz it easy to integrate with stripe
-  quantity               Int
   filePath                String
   imagePath              String
   description            String
