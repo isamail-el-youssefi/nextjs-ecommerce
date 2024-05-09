@@ -1,6 +1,10 @@
 import { Nav, NavLink } from "@/components/Nav";
 import React from "react";
 
+//? Forces all the admin pages to not use cache bz they are just admin page
+//? And also admin wants all the up to date info not cached infos
+export const dynamic = "force-dynamic";
+
 export default function AdminLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
