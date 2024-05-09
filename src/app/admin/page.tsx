@@ -46,9 +46,22 @@ async function getCustomerData() {
   };
 }
 
+async function getProductData() {
+  const [activeProducts, inactiveProducts] = await Promise.all([
+    db.product.count({ where: { isAvailableForPurchase: true } }),
+    db.product.count({ where: { isAvailableForPurchase: false } }),
+  ]);
+
+  return {
+    activeProducts,
+    inactiveProducts,
+  };
+}
+
 export default async function AdminDashboard() {
   const { amount, numberOfSales } = await getSalesData();
   const { userCount, averageValuePerCustomer } = await getCustomerData();
+  const { activeProducts, inactiveProducts } = await getProductData();
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -62,7 +75,11 @@ export default async function AdminDashboard() {
         subtitle={formatCurrency(averageValuePerCustomer) + " Average Value"}
         body={formatNumber(userCount)}
       />
-
+      <DashboardCard
+        title="Active Products"
+        subtitle={formatNumber(inactiveProducts) + " Inactive"}
+        body={formatNumber(activeProducts)}
+      />
     </div>
   );
 }
