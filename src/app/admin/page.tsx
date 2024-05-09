@@ -6,6 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import db from "@/db/db";
+import { formatCurrency, formatNumber } from "@/lib/formatters";
 import React from "react";
 
 async function getSalesData() {
@@ -19,13 +20,49 @@ async function getSalesData() {
   };
 }
 
+/* //! 1ST METHODE WITH 2 AWAITS
+async function getCustomerData() {
+  const userCount = await db.user.count();
+  const orderData = await db.order.aggregate({
+    _sum: { pricePaidInCents: true },
+  });
+} */
+
+//! 2ND METHODE WITH PROMISE ALL
+async function getCustomerData() {
+  const [userCount, orderData] = await Promise.all([
+    db.user.count(),
+    db.order.aggregate({
+      _sum: { pricePaidInCents: true },
+    }),
+  ]);
+
+  return {
+    userCount,
+    averageValuePerCustomer:
+      userCount === 0
+        ? 0
+        : (orderData._sum.pricePaidInCents || 0) / 100 / userCount,
+  };
+}
+
 export default async function AdminDashboard() {
   const { amount, numberOfSales } = await getSalesData();
+  const { userCount, averageValuePerCustomer } = await getCustomerData();
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <DashboardCard title="TITLE 1" subtitle={numberOfSales} body={amount} />
-      <DashboardCard title="TITLE 2" subtitle="SUBTITLE 2" body="BODY 2" />
-      <DashboardCard title="TITLE 3" subtitle="SUBTITLE 3" body="BODY 3" />
+      <DashboardCard
+        title="Sales"
+        subtitle={formatNumber(numberOfSales) + " Orders"}
+        body={formatCurrency(amount)}
+      />
+      <DashboardCard
+        title="Customer"
+        subtitle={formatCurrency(averageValuePerCustomer) + " Average Value"}
+        body={formatNumber(userCount)}
+      />
+
     </div>
   );
 }
